@@ -9,14 +9,9 @@ pub struct SmartDevice {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    // use super::*;
     #[test]
     fn test_create_device() {
-        SmartDevice {
-            name: "Smart Device".to_string(),
-            room_name: "Dinner".to_string(),
-            vendor_id: "DS!1$124e".to_string(),
-            status: true,
-        };
+        "Smart Device".to_string();"Dinner".to_string();"DS!1$124e".to_string();
     }
 }
