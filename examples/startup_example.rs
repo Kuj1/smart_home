@@ -1,20 +1,26 @@
-use smart_home::home_part::{
-    home::{DeviceInfo, SmartHome},
-    room::Room,
-};
+use smart_home::home_part::{device::SmartDevice, home::*, room::Room};
 
 fn main() {
     // Initialize SmartHome
-    let mut smart_home = SmartHome::new("My Home".to_string());
+    let mut smart_home = SmartHome::new("My Home");
     println!("{:?}", smart_home);
 
-    // Initialize rooms
-    let bedroom = Room::new("Bedroom".to_string());
-    let mut dinner = Room::new("Dinner".to_string());
+    // Initializ SmartDevice
+    let mut new_device = SmartDevice::new("Device", "WE23_234");
+    let mut new_device_1 = SmartDevice::new("Device 1", "WE243_234");
+    let stats: Vec<(&str, &str)> = vec![("temp", "10C"), ("Is_on", "true")];
+    let stats_1: Vec<(&str, &str)> = vec![("ssdfss", "dfsd"), ("gsfdsf", "sdf")];
 
-    // Initializ SmartDevice and append to rooms
-    dinner.append_room_device("Smart Socket".to_string(), "DFK#14324".to_string());
-    dinner.append_room_device("Smart Thermometr".to_string(), "LK+14324".to_string());
+    new_device.update_status_info(stats);
+    new_device_1.update_status_info(stats_1);
+
+    // Initialize rooms
+    let mut dinner = Room::new("Dinner");
+    let bedroom = Room::new("Bedroom");
+
+    // Append SmartDevice to room
+    dinner.append_room_device(&new_device);
+    dinner.append_room_device(&new_device_1);
 
     // Append rooms to SmartHome
     smart_home.update_rooms(&dinner);
@@ -26,7 +32,8 @@ fn main() {
     println!("{:?}", smart_home);
 
     // Create report
-    let device_info = smart_home.get_device_info(&dinner, "Smart Socket".to_string());
+    smart_home.update_rooms(&dinner);
+    let device_info = smart_home.get_device_info(&dinner, "Device");
     let report = smart_home.create_report(&device_info);
     println!("Report#1:\n{}", report)
 }

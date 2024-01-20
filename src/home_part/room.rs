@@ -1,37 +1,24 @@
+use std::collections::HashMap;
+
 use super::device::SmartDevice;
 
 #[derive(Debug)]
 #[allow(dead_code)]
-pub struct Room {
+pub struct Room<'a> {
     pub(crate) name: String,
-    pub(crate) smart_devices: Vec<SmartDevice>,
+    pub(crate) smart_devices: HashMap<String, &'a SmartDevice>,
 }
 
-impl Room {
-    pub fn new(name: String) -> Self {
+impl<'a> Room<'a> {
+    pub fn new(name: &str) -> Self {
         Self {
-            name,
-            smart_devices: Vec::new(),
+            name: name.to_string(),
+            smart_devices: HashMap::new(),
         }
     }
 
-    pub fn append_room_device(
-        &mut self,
-        name_device: String,
-        vendor_id_device: String,
-    ) -> &mut Room {
-        let room_name = self.name.to_string();
-
-        let new_device = SmartDevice {
-            name: name_device,
-            room_name,
-            vendor_id: vendor_id_device,
-            status: false,
-        };
-
-        self.smart_devices.push(new_device);
-
-        self
+    pub fn append_room_device(&mut self, device: &'a SmartDevice) {
+        self.smart_devices.insert(device.vendor_id.clone(), device);
     }
 }
 
@@ -40,12 +27,22 @@ mod tests {
     use super::*;
     #[test]
     fn test_create_room() {
-        Room::new("Dinner".to_string());
+        Room::new("Dinner");
     }
 
     #[test]
     fn test_append_room_device() {
-        let mut dinner = Room::new("Dinner".to_string());
-        dinner.append_room_device("Smart Socket".to_string(), "DFK#14324".to_string());
+        let mut new_device = SmartDevice::new("Device", "WE23_234");
+        let mut new_device_1 = SmartDevice::new("Device 1", "WE243_234");
+
+        let stats: Vec<(&str, &str)> = vec![("sss", "dfsd"), ("gsf", "sdf")];
+        let stats_1: Vec<(&str, &str)> = vec![("ssdfss", "dfsd"), ("gsfdsf", "sdf")];
+
+        new_device.update_status_info(stats);
+        new_device_1.update_status_info(stats_1);
+
+        let mut dinner = Room::new("Dinner");
+        dinner.append_room_device(&new_device);
+        dinner.append_room_device(&new_device_1);
     }
 }
