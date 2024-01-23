@@ -18,7 +18,10 @@ impl<'a> Room<'a> {
     }
 
     pub fn append_room_device(&mut self, device: &'a SmartDevice) {
-        self.smart_devices.insert(device.vendor_id.clone(), device);
+        self.smart_devices.insert(
+            format!("{}/{}", device.name, device.vendor_id),
+            device
+        );
     }
 }
 

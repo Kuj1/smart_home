@@ -6,10 +6,10 @@ fn main() {
     println!("{:?}", smart_home);
 
     // Initializ SmartDevice
-    let mut new_device = SmartDevice::new("Device", "WE23_234");
-    let mut new_device_1 = SmartDevice::new("Device 1", "WE243_234");
-    let stats: Vec<(&str, &str)> = vec![("temp", "10C"), ("Is_on", "true")];
-    let stats_1: Vec<(&str, &str)> = vec![("ssdfss", "dfsd"), ("gsfdsf", "sdf")];
+    let mut new_device = SmartDevice::new("Smart Socket", "WE23_134");
+    let mut new_device_1 = SmartDevice::new("Smart Socket", "WE23_234");
+    let stats: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "true"), ("Power", "2A")];
+    let stats_1: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
 
     new_device.update_status_info(stats);
     new_device_1.update_status_info(stats_1);
@@ -33,7 +33,11 @@ fn main() {
 
     // Create report
     smart_home.update_rooms(&dinner);
-    let device_info = smart_home.get_device_info(&dinner, "Device").unwrap();
+    let device_info = smart_home.get_device_info(&dinner, "Smart Socket/WE23_134").unwrap();
     let report = smart_home.create_report(&device_info);
-    println!("Report#1:\n{}", report)
+    println!("{}", report);
+
+    let room_devices_info = smart_home.get_room_devices_info(&dinner).unwrap();
+    let reports = smart_home.create_report(&room_devices_info);
+    println!("{}", reports)
 }
