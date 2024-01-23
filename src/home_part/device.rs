@@ -28,7 +28,6 @@ impl SmartDevice {
 mod tests {
     use super::SmartDevice;
 
-    // use super::*;
     #[test]
     fn test_create_device() {
         let mut new_device = SmartDevice::new("Device", "WE23_234");

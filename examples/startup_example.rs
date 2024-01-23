@@ -16,7 +16,7 @@ fn main() {
 
     // Initialize rooms
     let mut dinner = Room::new("Dinner");
-    let bedroom = Room::new("Bedroom");
+    let _bedroom = Room::new("Bedroom");
 
     // Append SmartDevice to room
     dinner.append_room_device(&new_device);
@@ -24,7 +24,7 @@ fn main() {
 
     // Append rooms to SmartHome
     smart_home.update_rooms(&dinner);
-    smart_home.update_rooms(&bedroom);
+    // smart_home.update_rooms(&bedroom);
 
     // Get rooms and SmartDevice in it
     let rooms = smart_home.get_rooms();
@@ -33,7 +33,7 @@ fn main() {
 
     // Create report
     smart_home.update_rooms(&dinner);
-    let device_info = smart_home.get_device_info(&dinner, "Device");
+    let device_info = smart_home.get_device_info(&dinner, "Device").unwrap();
     let report = smart_home.create_report(&device_info);
     println!("Report#1:\n{}", report)
 }
