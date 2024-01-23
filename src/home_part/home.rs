@@ -82,12 +82,12 @@ impl<'a> DeviceInfo<'a> for SmartHome<'a> {
             let next = y.next();
 
             if next.unwrap().1.name == device_name.trim() {
-                break Ok(next.unwrap().1)
+                break Ok(next.unwrap().1);
             } else if next.unwrap().1.name != device_name.trim() {
-                break Err(CommonError::DontExistDevice)
+                break Err(CommonError::DontExistDevice);
             }
 
-            continue
+            continue;
         };
         let device_x = x.unwrap();
         match device_x.name == device_name {
