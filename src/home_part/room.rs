@@ -33,11 +33,10 @@ mod tests {
 
     #[test]
     fn test_append_room_device() {
-        let mut new_device = SmartDevice::new("Device", "WE23_234");
-        let mut new_device_1 = SmartDevice::new("Device 1", "WE243_234");
-
-        let stats: Vec<(&str, &str)> = vec![("sss", "dfsd"), ("gsf", "sdf")];
-        let stats_1: Vec<(&str, &str)> = vec![("ssdfss", "dfsd"), ("gsfdsf", "sdf")];
+        let mut new_device = SmartDevice::new("Smart Socket", "WE23_134");
+        let mut new_device_1 = SmartDevice::new("Smart Socket", "WE23_234");
+        let stats: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "true"), ("Power", "2A")];
+        let stats_1: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
 
         new_device.update_status_info(stats);
         new_device_1.update_status_info(stats_1);
