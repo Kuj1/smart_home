@@ -33,7 +33,9 @@ fn main() {
 
     // Create report
     smart_home.update_rooms(&dinner);
-    let device_info = smart_home.get_device_info(&dinner, "Smart Socket/WE23_134").unwrap();
+    let device_info = smart_home
+        .get_device_info(&dinner, "Smart Socket/WE23_134")
+        .unwrap();
     let report = smart_home.create_report(&device_info);
     println!("{}", report);
 
