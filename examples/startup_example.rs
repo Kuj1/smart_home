@@ -1,6 +1,6 @@
 use smart_home::home_part::{device::SmartDevice, home::*, room::Room};
 
-fn main() {
+fn example() {
     // Initialize SmartHome
     let mut smart_home = SmartHome::new("My Home");
     println!("{:?}", smart_home);
@@ -16,30 +16,66 @@ fn main() {
 
     // Initialize rooms
     let mut dinner = Room::new("Dinner");
-    let _bedroom = Room::new("Bedroom");
+    let mut bedroom = Room::new("Bedroom");
 
     // Append SmartDevice to room
     dinner.append_room_device(&new_device);
     dinner.append_room_device(&new_device_1);
+    bedroom.append_room_device(&new_device_1);
+
+    // Delete device
+    dinner.remove_device("Smart Socket/WE23_134");
 
     // Append rooms to SmartHome
     smart_home.update_rooms(&dinner);
-    // smart_home.update_rooms(&bedroom);
+    smart_home.update_rooms(&bedroom);
+
+    // Delete rooms
+    smart_home.remove_rooms("Dinner");
 
     // Get rooms and SmartDevice in it
     let rooms = smart_home.get_rooms();
-    println!("{:?}", rooms);
-    println!("{:?}", smart_home);
+    println!("{:#?}", rooms);
+    println!("{:#?}", smart_home);
 
     // Create report
-    smart_home.update_rooms(&dinner);
     let device_info = smart_home
         .get_device_info(&dinner, "Smart Socket/WE23_134")
         .unwrap();
     let report = smart_home.create_report(&device_info);
     println!("{}", report);
 
-    let room_devices_info = smart_home.get_room_devices_info(&dinner).unwrap();
-    let reports = smart_home.create_report(&room_devices_info);
-    println!("{}", reports)
+    let dinner_devices_info = smart_home.get_room_devices_info(&dinner).unwrap();
+    let reports = smart_home.create_report(&dinner_devices_info);
+    println!("{}", reports);
+
+    println!("{:#?}", smart_home);
 }
+
+fn example_from_cli() {
+    // Initialize SmartHome
+    let mut smart_home = SmartHome::new_from_cli();
+    // println!("{:?}", smart_home);
+
+    // Initializ SmartDevice
+    let mut new_device = SmartDevice::new_from_cli();
+    let stats: Vec<(String, String)> = SmartDevice::request_for_status_info();
+    new_device.update_status_info_from_cli(stats);
+
+    // Initialize rooms
+    let mut dinner = Room::new_from_cli();
+
+    // Append SmartDevice to room
+    dinner.append_room_device(&new_device);
+
+    // Append rooms to SmartHome
+    smart_home.update_rooms(&dinner);
+    println!("{:#?}", smart_home);
+
+}
+
+fn main() {
+    example();
+    example_from_cli();
+}
+

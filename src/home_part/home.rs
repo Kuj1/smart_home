@@ -1,3 +1,6 @@
+use std::io;
+
+use itertools::enumerate;
 use serde_json::to_string_pretty as hashmap_to_string;
 
 use super::errors::CommonError;
@@ -29,7 +32,7 @@ impl<'a> DeviceInfo<'a> for String {
             }
             None => return Err(CommonError::DontExistDevice),
         };
-        Ok(device.unwrap())
+        device
     }
 
     fn get_room_devices_info(&self, room: &'a Room) -> Result<String, CommonError> {
@@ -58,7 +61,7 @@ impl<'a> DeviceInfo<'a> for String {
             false => Err(CommonError::DontExistDevice),
         };
 
-        Ok(room_devices.unwrap())
+        room_devices
     }
 }
 
@@ -76,9 +79,24 @@ impl<'a> SmartHome<'a> {
             rooms: Vec::new(),
         }
     }
+    pub fn new_from_cli() -> Self {
+        let mut title = String::new();
+        io::stdin().read_line(&mut title).expect("Can't read title");
+
+        Self { title: title.trim().replace("\n", ""), rooms: Vec::new(), }
+    }
 
     pub fn update_rooms(&mut self, room: &'a Room) {
         self.rooms.push(room);
+    }
+
+    pub fn remove_rooms(&mut self, room: &str) {
+        for (x,y) in enumerate(&self.rooms) {
+            if y.name == room {
+                self.rooms.remove(x);
+                break;
+            }
+        }
     }
 
     pub fn get_rooms(&self) -> Result<Vec<String>, CommonError> {
@@ -119,7 +137,7 @@ impl<'a> DeviceInfo<'a> for SmartHome<'a> {
             }
             None => return Err(CommonError::DontExistDevice),
         };
-        Ok(device.unwrap())
+        device
     }
 
     fn get_room_devices_info(&self, room: &'a Room) -> Result<String, CommonError> {
@@ -148,7 +166,7 @@ impl<'a> DeviceInfo<'a> for SmartHome<'a> {
             false => Err(CommonError::DontExistDevice),
         };
 
-        Ok(room_devices.unwrap())
+        room_devices
     }
 }
 
@@ -181,6 +199,25 @@ mod tests {
     }
 
     #[test]
+    fn test_remove_room() {
+        let mut smart_home = SmartHome::new("My Home");
+        let mut new_device = SmartDevice::new("Smart Socket", "WE23_134");
+        let mut new_device_1 = SmartDevice::new("Smart Socket", "WE23_234");
+        let stats: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "true"), ("Power", "2A")];
+        let stats_1: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
+
+        new_device.update_status_info(stats);
+        new_device_1.update_status_info(stats_1);
+
+        let mut dinner = Room::new("Dinner");
+        dinner.append_room_device(&new_device);
+        dinner.append_room_device(&new_device_1);
+
+        smart_home.remove_rooms("Dinner");
+
+    }
+
+    #[test]
     fn test_get_rooms() {
         let mut smart_home = SmartHome::new("My Home");
         let mut new_device = SmartDevice::new("Smart Socket", "WE23_134");
@@ -201,6 +238,7 @@ mod tests {
 
     #[test]
     fn test_get_device_info() {
+        io::stdin().lock()
         let mut smart_home = SmartHome::new("My Home");
         let mut new_device = SmartDevice::new("Smart Socket", "WE23_134");
         let mut new_device_1 = SmartDevice::new("Smart Socket", "WE23_234");
