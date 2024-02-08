@@ -238,7 +238,6 @@ mod tests {
 
     #[test]
     fn test_get_device_info() {
-        io::stdin().lock()
         let mut smart_home = SmartHome::new("My Home");
         let mut new_device = SmartDevice::new("Smart Socket", "WE23_134");
         let mut new_device_1 = SmartDevice::new("Smart Socket", "WE23_234");
