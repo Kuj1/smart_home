@@ -71,11 +71,9 @@ fn example_from_cli() {
     // Append rooms to SmartHome
     smart_home.update_rooms(&dinner);
     println!("{:#?}", smart_home);
-
 }
 
 fn main() {
     example();
     example_from_cli();
 }
-

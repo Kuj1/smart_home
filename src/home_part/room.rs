@@ -20,9 +20,11 @@ impl<'a> Room<'a> {
     pub fn new_from_cli() -> Self {
         println!("Please enter room name: ");
         let mut room_name = String::new();
-        io::stdin().read_line(&mut room_name).expect("Can't read room_name");
-        Self { 
-            name: room_name.trim().replace("\n", ""),
+        io::stdin()
+            .read_line(&mut room_name)
+            .expect("Can't read room_name");
+        Self {
+            name: room_name.trim().replace('\n', ""),
             smart_devices: HashMap::new(),
         }
     }
@@ -50,7 +52,8 @@ mod tests {
         let mut new_device = SmartDevice::new("Smart Socket", "WE23_134");
         let mut new_device_1 = SmartDevice::new("Smart Socket", "WE23_234");
         let stats: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "true"), ("Power", "2A")];
-        let stats_1: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
+        let stats_1: Vec<(&str, &str)> =
+            vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
 
         new_device.update_status_info(stats);
         new_device_1.update_status_info(stats_1);
@@ -65,7 +68,8 @@ mod tests {
         let mut new_device = SmartDevice::new("Smart Socket", "WE23_134");
         let mut new_device_1 = SmartDevice::new("Smart Socket", "WE23_234");
         let stats: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "true"), ("Power", "2A")];
-        let stats_1: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
+        let stats_1: Vec<(&str, &str)> =
+            vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
 
         new_device.update_status_info(stats);
         new_device_1.update_status_info(stats_1);
@@ -75,6 +79,5 @@ mod tests {
         dinner.append_room_device(&new_device_1);
 
         dinner.remove_device("Smart Socket/WE23_134");
-
     }
 }

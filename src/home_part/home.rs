@@ -83,7 +83,10 @@ impl<'a> SmartHome<'a> {
         let mut title = String::new();
         io::stdin().read_line(&mut title).expect("Can't read title");
 
-        Self { title: title.trim().replace("\n", ""), rooms: Vec::new(), }
+        Self {
+            title: title.trim().replace('\n', ""),
+            rooms: Vec::new(),
+        }
     }
 
     pub fn update_rooms(&mut self, room: &'a Room) {
@@ -91,7 +94,7 @@ impl<'a> SmartHome<'a> {
     }
 
     pub fn remove_rooms(&mut self, room: &str) {
-        for (x,y) in enumerate(&self.rooms) {
+        for (x, y) in enumerate(&self.rooms) {
             if y.name == room {
                 self.rooms.remove(x);
                 break;
@@ -204,7 +207,8 @@ mod tests {
         let mut new_device = SmartDevice::new("Smart Socket", "WE23_134");
         let mut new_device_1 = SmartDevice::new("Smart Socket", "WE23_234");
         let stats: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "true"), ("Power", "2A")];
-        let stats_1: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
+        let stats_1: Vec<(&str, &str)> =
+            vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
 
         new_device.update_status_info(stats);
         new_device_1.update_status_info(stats_1);
@@ -214,7 +218,6 @@ mod tests {
         dinner.append_room_device(&new_device_1);
 
         smart_home.remove_rooms("Dinner");
-
     }
 
     #[test]
@@ -252,7 +255,9 @@ mod tests {
         dinner.append_room_device(&new_device);
         dinner.append_room_device(&new_device_1);
         smart_home.update_rooms(&dinner);
-        let _socket = smart_home.get_device_info(&dinner, "Smart Socket/WE23_134").unwrap();
+        let _socket = smart_home
+            .get_device_info(&dinner, "Smart Socket/WE23_134")
+            .unwrap();
     }
 
     #[test]
@@ -272,7 +277,9 @@ mod tests {
         dinner.append_room_device(&new_device);
         dinner.append_room_device(&new_device_1);
         smart_home.update_rooms(&dinner);
-        let _thermo = smart_home.get_device_info(&dinner, "Smart Thermometr").unwrap();
+        let _thermo = smart_home
+            .get_device_info(&dinner, "Smart Thermometr")
+            .unwrap();
     }
 
     #[test]
@@ -281,7 +288,8 @@ mod tests {
         let mut new_device = SmartDevice::new("Smart Socket", "WE23_134");
         let mut new_device_1 = SmartDevice::new("Smart Socket", "WE23_234");
         let stats: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "true"), ("Power", "2A")];
-        let stats_1: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
+        let stats_1: Vec<(&str, &str)> =
+            vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
 
         new_device.update_status_info(stats);
         new_device_1.update_status_info(stats_1);
@@ -299,7 +307,8 @@ mod tests {
         let mut new_device = SmartDevice::new("Smart Socket", "WE23_134");
         let mut new_device_1 = SmartDevice::new("Smart Socket", "WE23_234");
         let stats: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "true"), ("Power", "2A")];
-        let stats_1: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
+        let stats_1: Vec<(&str, &str)> =
+            vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
 
         new_device.update_status_info(stats);
         new_device_1.update_status_info(stats_1);
@@ -308,7 +317,9 @@ mod tests {
         dinner.append_room_device(&new_device);
         dinner.append_room_device(&new_device_1);
         smart_home.update_rooms(&dinner);
-        let device_info = smart_home.get_device_info(&dinner, "Smart Socket/WE23_134").unwrap();
+        let device_info = smart_home
+            .get_device_info(&dinner, "Smart Socket/WE23_134")
+            .unwrap();
         smart_home.create_report(&device_info);
     }
 }

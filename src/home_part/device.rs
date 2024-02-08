@@ -26,30 +26,37 @@ impl SmartDevice {
 
         println!("Please enter you device vendor_id: ");
         let mut vendor_id: String = String::new();
-        io::stdin().read_line(&mut vendor_id).expect("Can't read vendor_id");
+        io::stdin()
+            .read_line(&mut vendor_id)
+            .expect("Can't read vendor_id");
 
         Self {
-            name: name.replace("\n", ""),
-            vendor_id: vendor_id.replace("\n", ""),
+            name: name.replace('\n', ""),
+            vendor_id: vendor_id.replace('\n', ""),
             status_info: HashMap::new(),
         }
     }
 
-    pub fn request_for_status_info<'a>() -> Vec<(String, String)> {
+    pub fn request_for_status_info() -> Vec<(String, String)> {
         let mut status_info: Vec<(String, String)> = Vec::new();
         loop {
             println!("Please enter status name and this value (separator is 'space')");
             println!("If you want to end entering status info, enter 'exit':");
             let mut stats: String = String::new();
-             
-            io::stdin().read_line(&mut stats).expect("Can't read status info");
-            if stats.replace("\n", "") == "exit".to_string() {
+
+            io::stdin()
+                .read_line(&mut stats)
+                .expect("Can't read status info");
+            if stats.replace('\n', "") == *"exit" {
                 break;
             }
 
-            let x: (String, String)= stats.split(" ").map(|x| x.replace("\n", "").to_string()).collect_tuple().unwrap();
+            let x: (String, String) = stats
+                .split(' ')
+                .map(|x| x.replace('\n', "").to_string())
+                .collect_tuple()
+                .unwrap();
             status_info.push(x);
-
         }
 
         status_info
@@ -77,7 +84,8 @@ mod tests {
         let mut new_device = SmartDevice::new("Smart Socket", "WE23_134");
         let mut new_device_1 = SmartDevice::new("Smart Socket", "WE23_234");
         let stats: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "true"), ("Power", "2A")];
-        let stats_1: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
+        let stats_1: Vec<(&str, &str)> =
+            vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
 
         new_device.update_status_info(stats);
         new_device_1.update_status_info(stats_1);
