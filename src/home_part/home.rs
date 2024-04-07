@@ -283,6 +283,29 @@ mod tests {
     }
 
     #[test]
+    #[should_panic(expected = "Dont exist Room. You need to create it")]
+    fn test_thiserror_dont_ex_device_info() {
+        let mut smart_home = SmartHome::new("My Home");
+        let mut new_device = SmartDevice::new("Smart Socket", "WE23_134");
+        let mut new_device_1 = SmartDevice::new("Smart Socket", "WE23_234");
+        let stats: Vec<(&str, &str)> = vec![("voltage", "220"), ("Is_on", "true"), ("Power", "2A")];
+        let stats_1: Vec<(&str, &str)> =
+            vec![("voltage", "220"), ("Is_on", "false"), ("Power", "1A")];
+
+        new_device.update_status_info(stats);
+        new_device_1.update_status_info(stats_1);
+
+        let mut dinner = Room::new("Dinner");
+        dinner.append_room_device(&new_device);
+        dinner.append_room_device(&new_device_1);
+        smart_home.update_rooms(&dinner);
+        let thermo = smart_home.get_device_info(&dinner, "Smart Thermometr");
+        // .unwrap();
+        // println!("{:?}", thermo)
+        panic!("{}", thermo.unwrap_err())
+    }
+
+    #[test]
     fn test_room_devices_info() {
         let mut smart_home = SmartHome::new("My Home");
         let mut new_device = SmartDevice::new("Smart Socket", "WE23_134");
