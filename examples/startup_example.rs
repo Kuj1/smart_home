@@ -1,4 +1,6 @@
-use smart_home::home_part::{device::SmartDevice, home::*, room::Room};
+use std::error::Error;
+
+use smart_home::home_part::{device::SmartDevice, home::*, room::Room, errors::CommonError};
 
 fn example() {
     // Initialize SmartHome
@@ -41,9 +43,9 @@ fn example() {
     // Create report
     let device_info = smart_home
         .get_device_info(&dinner, "Smart Socket/WE23_134")
-        .unwrap();
-    let report = smart_home.create_report(&device_info);
-    println!("{}", report);
+        .unwrap_err();
+
+    println!("{}", device_info);
 
     let dinner_devices_info = smart_home.get_room_devices_info(&dinner).unwrap();
     let reports = smart_home.create_report(&dinner_devices_info);
@@ -73,7 +75,16 @@ fn example_from_cli() {
     println!("{:#?}", smart_home);
 }
 
+fn example_error() {
+    let dont_exist_room: Result<i32, CommonError> = Err(CommonError::DontExistRoom);
+    let dont_exist_device: Result<i32, CommonError> = Err(CommonError::DontExistDevice);
+    let dont_exist_info: Result<i32, CommonError> = Err(CommonError::DontExistInfo);
+
+    println!("\t*Errors in lib*\n{}\n{}\n{}\n", dont_exist_room.unwrap_err(), dont_exist_device.unwrap_err(), dont_exist_info.unwrap_err())
+}
+
 fn main() {
+    example_error();
     example();
     example_from_cli();
 }
