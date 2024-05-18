@@ -3,7 +3,7 @@
 - Before you start, check .env and correct "DATABASE_URL"
 - If you want run examples in examples folder (-_-), you need to correct the values of the variables to your own, based on what you have in the table.
 
-Create table home
+*Create table home*
 ```sql
 CREATE TABLE IF NOT EXISTS houses (
     id serial PRIMARY KEY,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS houses (
 ```
 
 
-Create table rooms
+*Create table rooms*
 ```sql
 CREATE TABLE IF NOT EXISTS rooms (
     id serial PRIMARY KEY,
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS rooms (
 );
 ```
 
-Create table smart_device
+*Create table smart_device*
 ```sql
 CREATE TABLE IF NOT EXISTS smart_devices (
     id serial PRIMARY KEY,
